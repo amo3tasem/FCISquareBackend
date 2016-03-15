@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -74,6 +75,55 @@ public class Services {
 		json.put("status", status ? 1 : 0);
 		return json.toJSONString();
 	}
+	
+	
+	@POST
+	@Path("/userLastPosition")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String userLastPosition(@FormParam("id") String id) throws NumberFormatException, SQLException {
+		UserModel user = UserModel.LastPosition(Integer.parseInt(id));
+		JSONObject json = new JSONObject();
+		json.put("lat", user.getLat());
+		json.put("long", user.getLon());
+		return json.toJSONString();
+	}
+	@POST
+	@Path("/followUser")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String followUser(@FormParam("email1") String email1, @FormParam("email2") String email2) throws SQLException {
+		Boolean status = 
+				UserModel.follow(email1, email2);
+		JSONObject json = new JSONObject();
+		json.put("status",  status ? 1 : 0);
+		return json.toJSONString();
+	}
+	
+	@POST
+	@Path("/unfollowUser")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String unfollowUser(@FormParam("email1") String email1, @FormParam("email2") String email2) throws SQLException {
+		Boolean status = 
+				UserModel.unfollow(email1, email2);
+		JSONObject json = new JSONObject();
+		json.put("status",  status ? 1 : 0);
+		return json.toJSONString();
+	}
+	
+	@POST
+	@Path("/getFollowers")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getFollowers(@FormParam("email") String email) throws SQLException
+	{
+		int user = UserModel.followers(email);
+		JSONObject json = new JSONObject();
+		json.put("followers", user);
+		/*for(int i = 0 ; i < user.length ; i++)
+		{
+			json.put("name", user[i].getName());
+		}*/
+		return json.toJSONString();
+	}
+	
 
 	@GET
 	@Path("/")
