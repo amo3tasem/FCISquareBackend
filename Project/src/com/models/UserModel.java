@@ -234,42 +234,56 @@ public class UserModel {
 		}
 		return false;
 	}
-	public static int followers(String email) throws SQLException
+
+	public static ArrayList<Integer> followers(int id) throws SQLException
 	{
+		Connection conn = DBConnection.getActiveConnection();
+		String sql1 = ("Select `id2` from followers where `id1` = ?");
+		PreparedStatement stmt;
+		stmt = conn.prepareStatement(sql1);
+		stmt.setInt(1, id);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<Integer> ids = new ArrayList <Integer>();
+		ArrayList<String> names = new ArrayList <String>();
+		while (rs.next()){
+			ids.add(rs.getInt("id2"));
+		}
+		return ids;
+		/*int i=0;
+		String sql2 = ("select `name` from users where `id`=?");
+		PreparedStatement stmt1;
+		stmt1 = conn.prepareStatement(sql2);
+		stmt1.setInt(1 , ids.get(i));
+		ResultSet rs1 = stmt1.executeQuery();
 		
-			Connection conn = DBConnection.getActiveConnection();
-			String sql1 = ("Select `id` from users where `email` = ?");
-			PreparedStatement stmt;
-			stmt = conn.prepareStatement(sql1);
-			stmt.setString(1, email);
-			ResultSet rs = stmt.executeQuery();
-			UserModel user = new UserModel();
-			if(rs.next())
-			{
-				user.id = rs.getInt("id");
-			}
-			//String sql2 = ("Select `id2` from followers where `id1` = ?");
-			String sql2 = ("select `name`,  from users where `id` in (select `id2` from followers where `id1` = ?)");
-			stmt = conn.prepareStatement(sql2);
-			stmt.setInt(1, user.id);
-			rs = stmt.executeQuery();
-			ArrayList <UserModel> users = new ArrayList<UserModel>();
-			UserModel i = new UserModel();
-			while(rs.next())
-			{
-				i.name = rs.getString("name");
-				users.add(i);
-			}
-			int size = users.size();
-			/*UserModel[] names = new UserModel[size];
-			for(int j = 0 ; j < size ; j++)
-			{
-				names[j] = users.get(j);
-			}
-			return names;*/
-			return size;
-//			return null;
-	
+		if (rs1.next()){
+			names.add(rs1.getString("name"));
+		}
+		
+		
+		int size = ids.size();
+		
+		while(rs1.next() && i<size){
+			//stmt1 = conn.prepareStatement(sql2);
+			stmt1.setInt(1 , ids.get(i));
+			//rs1 = stmt1.executeQuery();
+			names.add(rs1.getString("name"));
+			//stmt1 = conn.prepareStatement(sql2);
+			//stmt1.setInt(1 , ids.get(i));
+			i++;
+		}
+		stmt1.setInt(1 , ids.get(i));
+		ResultSet rs1 = stmt1.executeQuery();
+		i=1;
+		int s=0;
+		while (rs1.next() && i <size){
+			stmt1.setInt(1 , ids.get(i));
+			rs1=stmt1.executeQuery();
+			names.add(rs1.getString("name"));
+			i++;
+		}
+		return names;
+		*/
 		
 	}
 

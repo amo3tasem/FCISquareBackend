@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.models.DBConnection;
@@ -91,8 +92,7 @@ public class Services {
 	@Path("/followUser")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String followUser(@FormParam("email1") String email1, @FormParam("email2") String email2) throws SQLException {
-		Boolean status = 
-				UserModel.follow(email1, email2);
+		Boolean status = UserModel.follow(email1, email2);
 		JSONObject json = new JSONObject();
 		json.put("status",  status ? 1 : 0);
 		return json.toJSONString();
@@ -102,8 +102,7 @@ public class Services {
 	@Path("/unfollowUser")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String unfollowUser(@FormParam("email1") String email1, @FormParam("email2") String email2) throws SQLException {
-		Boolean status = 
-				UserModel.unfollow(email1, email2);
+		Boolean status = UserModel.unfollow(email1, email2);
 		JSONObject json = new JSONObject();
 		json.put("status",  status ? 1 : 0);
 		return json.toJSONString();
@@ -112,15 +111,12 @@ public class Services {
 	@POST
 	@Path("/getFollowers")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getFollowers(@FormParam("email") String email) throws SQLException
+	//public String getFollowers(@FormParam("email") String email) throws SQLException
+	public String getFollowers(@FormParam("id") String id) throws SQLException
 	{
-		int user = UserModel.followers(email);
+		ArrayList<Integer> user = UserModel.followers(Integer.parseInt(id));
 		JSONObject json = new JSONObject();
 		json.put("followers", user);
-		/*for(int i = 0 ; i < user.length ; i++)
-		{
-			json.put("name", user[i].getName());
-		}*/
 		return json.toJSONString();
 	}
 	
