@@ -249,14 +249,14 @@ public class UserModel {
 			ids.add(rs.getInt("id2"));
 		}
 		return ids;
-		/*int i=0;
+	/*	int i=0;
 		String sql2 = ("select `name` from users where `id`=?");
 		PreparedStatement stmt1;
 		stmt1 = conn.prepareStatement(sql2);
 		stmt1.setInt(1 , ids.get(i));
 		ResultSet rs1 = stmt1.executeQuery();
-		
-		if (rs1.next()){
+		i++;
+	/*	if (rs1.next()){
 			names.add(rs1.getString("name"));
 		}
 		
@@ -264,24 +264,27 @@ public class UserModel {
 		int size = ids.size();
 		
 		while(rs1.next() && i<size){
-			//stmt1 = conn.prepareStatement(sql2);
+			sql2 = ("select `name` from users where `id`=?");
+			
+			stmt1 = conn.prepareStatement(sql2);
 			stmt1.setInt(1 , ids.get(i));
-			//rs1 = stmt1.executeQuery();
+			rs1 = stmt1.executeQuery();
+			rs1 = stmt1.executeQuery();
 			names.add(rs1.getString("name"));
 			//stmt1 = conn.prepareStatement(sql2);
 			//stmt1.setInt(1 , ids.get(i));
 			i++;
 		}
-		stmt1.setInt(1 , ids.get(i));
-		ResultSet rs1 = stmt1.executeQuery();
-		i=1;
-		int s=0;
-		while (rs1.next() && i <size){
-			stmt1.setInt(1 , ids.get(i));
-			rs1=stmt1.executeQuery();
-			names.add(rs1.getString("name"));
-			i++;
-		}
+	//	stmt1.setInt(1 , ids.get(i));
+	//	ResultSet rs1 = stmt1.executeQuery();
+	//	i=1;
+	//	int s=0;
+	//	while (rs1.next() && i <size){
+	//		stmt1.setInt(1 , ids.get(i));
+		//	rs1=stmt1.executeQuery();
+		//	names.add(rs1.getString("name"));
+		//	i++;
+		//}
 		return names;
 		*/
 		
